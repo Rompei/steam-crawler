@@ -2,20 +2,19 @@ package crawler
 
 import (
 	"fmt"
-	"gopkg.in/mgo.v2/bson"
+	"strconv"
 )
 
 // Game is object to store steam game
 type Game struct {
-	ID            bson.ObjectId `json:"name" bosn:"_id"`
-	Name          string        `json:"name" bosn:"name"`
-	ReleaseDate   string        `json:"releaseDate" bson:"release_date"`
-	Number        int           `json:"number" "bson:"number"`
-	DiscountRate  int           `json:"discountRate" bson:"discount_rate"`
-	NormalPrice   int           `json:"normalPrice" bson:"normal_price"`
-	DiscountPrice int           `json:"discountPrice" bson:"discount_price"`
-	Rate          int           `json:"rate" bson:"rate"`
-	Reviewer      int           `json:"reviewer" bson:"reviewer"`
+	Number        int    `json:"number"`
+	Name          string `json:"name"`
+	ReleaseDate   string `json:"releaseDate"`
+	DiscountRate  int    `json:"discountRate"`
+	NormalPrice   int    `json:"normalPrice"`
+	DiscountPrice int    `json:"discountPrice"`
+	Rate          int    `json:"rate"`
+	Reviewer      int    `json:"reviewer"`
 }
 
 func (g *Game) String() {
@@ -29,4 +28,17 @@ func (g *Game) String() {
 	fmt.Printf("Reputation: %d/100\n", g.Rate)
 	fmt.Printf("The number of reviews: %d\n", g.Reviewer)
 	fmt.Printf("\n")
+}
+
+func (g *Game) GetRow() (row []string) {
+	row = make([]string, 8)
+	row[0] = strconv.Itoa(g.Number)
+	row[1] = g.Name
+	row[2] = g.ReleaseDate
+	row[3] = strconv.Itoa(g.DiscountRate)
+	row[4] = strconv.Itoa(g.NormalPrice)
+	row[5] = strconv.Itoa(g.DiscountPrice)
+	row[6] = strconv.Itoa(g.Rate)
+	row[7] = strconv.Itoa(g.Reviewer)
+	return
 }

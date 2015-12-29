@@ -13,4 +13,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	err = c.StoreCSV("data.csv")
+	if err != nil {
+		panic(err)
+	}
 }
