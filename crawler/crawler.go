@@ -1,8 +1,10 @@
 package crawler
 
 import (
+	"encoding/csv"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -46,7 +48,7 @@ func (c *Crawler) StartCrawl() (err error) {
 		if i == 2 {
 			pageNum, err = strconv.Atoi(s.Text())
 			if err != nil {
-				panic(err)
+				return
 			}
 		}
 	})
@@ -68,6 +70,59 @@ func (c *Crawler) StartCrawl() (err error) {
 	return
 }
 
+// StoreCSV stores game info as CSV.
+func (c *Crawler) StoreCSV(path string) (err error) {
+	c.SortGames()
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+	err = file.Truncate(0)
+	if err != nil {
+		return
+	}
+	writer := csv.NewWriter(file)
+	writer.UseCRLF = true
+
+	for _, v := range c.games {
+		writer.Write(v.GetRow())
+	}
+
+	writer.Flush()
+	return
+}
+
+// SortGames sorts games.
+func (c *Crawler) SortGames() {
+	c.games = sortData(c.games)
+}
+
+func sortData(games []Game) (ret []Game) {
+	if len(games) == 0 {
+		return games
+	}
+
+	pivot := games[0]
+
+	var left []Game
+	var right []Game
+
+	for _, v := range games[1:] {
+		if v.Number > pivot.Number {
+			right = append(right, v)
+		} else {
+			left = append(left, v)
+		}
+	}
+
+	left = sortData(left)
+	right = sortData(right)
+	ret = append(left, pivot)
+	ret = append(ret, right...)
+	return
+}
+
 func (c *Crawler) crawl(url string, resultCh chan []Game) {
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
@@ -77,7 +132,7 @@ func (c *Crawler) crawl(url string, resultCh chan []Game) {
 	// Getting the number of element of a page
 	elementNum, err := c.getFirstElementNumber(doc.Find(".search_pagination_left").Text())
 	if err != nil {
-		elementNum = 0
+		panic(err)
 	}
 
 	// Scraing
