@@ -169,6 +169,9 @@ func (c *Crawler) crawl(url string, resultCh chan []Game) {
 		// Getting link of the game
 		if bareURL, exist := s.Attr("href"); exist == true {
 			game.URL, err = c.extractURL(bareURL)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		games = append(games, game)
