@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"net/url"
 	"os"
 	"regexp"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 )
 
 // URL for getting special games from steam.
-var url = "http://store.steampowered.com/search/results?sort_by=_ASC&specials=1"
+const URL = "http://store.steampowered.com/search/results?sort_by=_ASC&specials=1"
 
 // Crawler is steam crawler.
 type Crawler struct {
@@ -37,7 +38,7 @@ func (c *Crawler) ShowAllGames() {
 
 // StartCrawl start crawling.
 func (c *Crawler) StartCrawl() (err error) {
-	doc, err := goquery.NewDocument(url)
+	doc, err := goquery.NewDocument(URL)
 	if err != nil {
 		return
 	}
@@ -56,7 +57,7 @@ func (c *Crawler) StartCrawl() (err error) {
 	// Starting goroutine.
 	resultCh := make(chan []Game, pageNum)
 	for i := 1; i < pageNum+1; i++ {
-		url := fmt.Sprintf("%s&page=%d", url, i)
+		url := fmt.Sprintf("%s&page=%d", URL, i)
 		go c.crawl(url, resultCh)
 	}
 
@@ -164,6 +165,15 @@ func (c *Crawler) crawl(url string, resultCh chan []Game) {
 		// Setting index of the games.
 		game.Number = elementNum
 		elementNum++
+
+		// Getting link of the game
+		if bareURL, exist := s.Attr("href"); exist == true {
+			game.URL, err = c.extractURL(bareURL)
+			if err != nil {
+				panic(err)
+			}
+		}
+
 		games = append(games, game)
 	})
 
@@ -250,4 +260,12 @@ func (*Crawler) extractReview(review string) (rate, reviewer int, err error) {
 	}
 
 	return
+}
+
+func (*Crawler) extractURL(bareURL string) (string, error) {
+	parsedURL, err := url.Parse(bareURL)
+	if err != nil {
+		return "", err
+	}
+	return parsedURL.Scheme + "://" + parsedURL.Host + parsedURL.Path, nil
 }

@@ -15,6 +15,7 @@ type Game struct {
 	DiscountPrice int    `json:"discountPrice"`
 	Rate          int    `json:"rate"`
 	Reviewer      int    `json:"reviewer"`
+	URL           string `json:"url"`
 }
 
 func (g *Game) String() {
@@ -27,11 +28,13 @@ func (g *Game) String() {
 	fmt.Printf("Discount price: %dYEN\n", g.DiscountPrice)
 	fmt.Printf("Reputation: %d/100\n", g.Rate)
 	fmt.Printf("The number of reviews: %d\n", g.Reviewer)
+	fmt.Printf("URL: %s\n", g.URL)
 	fmt.Printf("\n")
 }
 
+// GetRow returns the array of the game.
 func (g *Game) GetRow() (row []string) {
-	row = make([]string, 8)
+	row = make([]string, 9)
 	row[0] = strconv.Itoa(g.Number)
 	row[1] = g.Name
 	row[2] = g.ReleaseDate
@@ -40,5 +43,6 @@ func (g *Game) GetRow() (row []string) {
 	row[5] = strconv.Itoa(g.DiscountPrice)
 	row[6] = strconv.Itoa(g.Rate)
 	row[7] = strconv.Itoa(g.Reviewer)
+	row[8] = g.URL
 	return
 }

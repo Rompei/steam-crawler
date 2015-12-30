@@ -9,18 +9,20 @@ Steam Crawler is crawler for discounted games in Steam.
 
 ```
 go get github.com/Rompei/steam-crawler
+
+If you got error, "socket: too many open files", please set `ulimit -n` more, because this software opens sockets more than ulimit already set.
 ```
 
 ##Data Structure in CSV
 
 ```
-Nnumber,Name,Release date,Discount rate,Normal price,Discount price,Reputation,the number of reviewer
+Nnumber,Name,Release date,Discount rate,Normal price,Discount price,Reputation,the number of reviewer,URL
 ```
 
 ###Example
 
 ```
-1,Counter-Strike: Global Offensive,"21 Aug, 2012",50,1480,740,93,948815
+1,Counter-Strike: Global Offensive,"21 Aug, 2012",50,1480,740,93,948815,http://store.steampowered.com/app/730/
 ```
 
 ##License
