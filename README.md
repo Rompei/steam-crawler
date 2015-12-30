@@ -10,8 +10,9 @@ Steam Crawler is crawler for discounted games in Steam.
 ```
 go get github.com/Rompei/steam-crawler
 
-If you got error, "socket: too many open files", please set `ulimit -n` more, because this software opens sockets more than ulimit already set.
 ```
+
+If you got error, "socket: too many open files", when you execute a software that uses this software, please set `ulimit -n` more, because this software opens sockets more than ulimit already set.
 
 ##Data Structure in CSV
 
