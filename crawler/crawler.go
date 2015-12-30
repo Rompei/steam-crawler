@@ -12,7 +12,7 @@ import (
 )
 
 // URL for getting special games from steam.
-var URL = "http://store.steampowered.com/search/results?sort_by=_ASC&specials=1"
+const URL = "http://store.steampowered.com/search/results?sort_by=_ASC&specials=1"
 
 // Crawler is steam crawler.
 type Crawler struct {
