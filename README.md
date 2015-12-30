@@ -14,7 +14,9 @@ go get github.com/Rompei/steam-crawler
 
 ##Data Structure in CSV
 
-| Nnumber | Name | Release date | Discount rate | Normal price | Discount price | Reputation | the number of reviewer |
+```
+Nnumber,Name,Release date,Discount rate,Normal price,Discount price,Reputation,the number of reviewer
+```
 
 ###Example
 
