@@ -25,3 +25,4 @@ _testmain.go
 steam-crawler
 dist
 data.csv
+log.txt

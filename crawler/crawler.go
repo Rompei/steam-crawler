@@ -179,7 +179,12 @@ func (*Crawler) getFirstElementNumber(paginationLeft string) (int, error) {
 
 	pageStr := re.FindString(paginationLeft)
 
-	return strconv.Atoi(pageStr)
+	// FIX: There is cases can't treat the number of pages.
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		return 0, nil
+	}
+	return page, nil
 }
 
 // extractDiscount gets rate of discount.
