@@ -3,7 +3,6 @@
 [![Build Status](https://drone.io/github.com/Rompei/steam-crawler/status.png)](https://drone.io/github.com/Rompei/steam-crawler/latest)
 
 Steam Crawler is crawler for discounted games in Steam.  
-Executable example is available at [drone.io](https://drone.io/github.com/Rompei/steam-crawler/files).
 
 
 ##Usage
